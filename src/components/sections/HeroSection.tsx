@@ -81,11 +81,21 @@ export function HeroSection() {
 
   const handleScrollTo = (id: string) => {
     const element = document.getElementById(id);
-    const scrollContainer = document.querySelector(
-      'div[style*="overflow: auto"]',
+    const scrollContainers = Array.from(
+      document.querySelectorAll("div"),
+    ).filter(
+      (el) =>
+        el.scrollHeight > window.innerHeight &&
+        (el.style.overflow === "auto" ||
+          el.style.overflowY === "auto" ||
+          window.getComputedStyle(el).overflowY === "auto"),
     );
+    const scrollContainer = scrollContainers[0];
+
     if (element && scrollContainer) {
-      scrollContainer.scrollTo({ top: element.offsetTop, behavior: "smooth" });
+      const targetScroll =
+        scrollContainer.scrollTop + element.getBoundingClientRect().top;
+      scrollContainer.scrollTo({ top: targetScroll, behavior: "smooth" });
     }
   };
 

@@ -21,23 +21,29 @@ export function Navbar() {
   const handleNavClick = (id: SectionId) => {
     setActiveSection(id);
     const element = document.getElementById(id);
+
     // Find the hidden scroll container created by @react-three/drei ScrollControls
-    const scrollContainer = document.querySelector(
-      'div[style*="overflow: auto"]',
+    // It's the only div that has a scrollHeight > clientHeight and overflow auto
+    const scrollContainers = Array.from(
+      document.querySelectorAll("div"),
+    ).filter(
+      (el) =>
+        el.scrollHeight > window.innerHeight &&
+        (el.style.overflow === "auto" ||
+          el.style.overflowY === "auto" ||
+          window.getComputedStyle(el).overflowY === "auto"),
     );
+    const scrollContainer = scrollContainers[0];
 
     if (element && scrollContainer) {
-      // We subtract any existing transform from the bounding rect, or just use offsetTop.
-      // Since <Scroll html> uses transform to move it, we should use offsetTop if it's the direct child.
-      let offsetTop = element.offsetTop;
-      let current = element.offsetParent as HTMLElement;
-      while (current && current.style.transform === "") {
-        offsetTop += current.offsetTop;
-        current = current.offsetParent as HTMLElement;
-      }
+      // Because Drei uses CSS transforms to move the HTML, the visual position on screen
+      // (getBoundingClientRect().top) is exactly how far we need to scroll from our CURRENT scroll position.
+      const targetScroll =
+        scrollContainer.scrollTop + element.getBoundingClientRect().top;
 
-      scrollContainer.scrollTo({ top: element.offsetTop, behavior: "smooth" });
+      scrollContainer.scrollTo({ top: targetScroll, behavior: "smooth" });
     }
+
     if (isMenuOpen) {
       toggleMenu();
     }
