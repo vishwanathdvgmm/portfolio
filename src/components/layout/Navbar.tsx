@@ -27,10 +27,6 @@ export function Navbar() {
     );
 
     if (element && scrollContainer) {
-      // Calculate the absolute top position of the element relative to the scrolling wrapper
-      const topPos =
-        element.getBoundingClientRect().top +
-        (scrollContainer as HTMLElement).scrollTop;
       // We subtract any existing transform from the bounding rect, or just use offsetTop.
       // Since <Scroll html> uses transform to move it, we should use offsetTop if it's the direct child.
       let offsetTop = element.offsetTop;
