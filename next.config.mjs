@@ -1,6 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
+
+  basePath: "/portfolio",
+  assetPrefix: "/portfolio",
+
+  trailingSlash: true,
+
+  images: {
+    unoptimized: true,
+  },
+
   reactStrictMode: true,
+
   transpilePackages: [
     "three",
     "@react-three/fiber",
@@ -8,6 +20,7 @@ const nextConfig = {
     "@react-three/postprocessing",
     "gsap",
   ],
+
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(glsl|vs|fs|vert|frag)$/,
