@@ -26,11 +26,11 @@ export function DNAObject() {
     const mx = state.pointer.x; // -1 to 1
     const my = state.pointer.y; // -1 to 1
 
-    // We assume the DNA is roughly in the center of the screen
-    const distToCenter = Math.sqrt(mx * mx + my * my);
+    // Unravel effect driven by vertical mouse motion
+    // my goes from -1 (bottom) to 1 (top)
+    // We'll make it fully twisted at bottom (0) and fully unraveled at top (1)
+    const targetUnravel = THREE.MathUtils.clamp((my + 1) / 2, 0, 1);
 
-    // If mouse is near center (< 0.3), increase unravel amount
-    const targetUnravel = distToCenter < 0.3 ? 1 : 0;
     unravelAmount.current = THREE.MathUtils.lerp(
       unravelAmount.current,
       targetUnravel,
