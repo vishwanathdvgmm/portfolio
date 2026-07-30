@@ -103,6 +103,7 @@ export function TimelineSection() {
               headingTl.play();
               trackTl.play();
               hasPlayed = true;
+              window.dispatchEvent(new CustomEvent("timeline-enter"));
             }
           }
         },
@@ -167,6 +168,20 @@ export function TimelineSection() {
             <div
               key={idx}
               className="timeline-item relative pl-8 sm:pl-12 group"
+              onMouseEnter={() => {
+                window.dispatchEvent(
+                  new CustomEvent("timeline-hover", {
+                    detail: { index: idx, isHovering: true },
+                  }),
+                );
+              }}
+              onMouseLeave={() => {
+                window.dispatchEvent(
+                  new CustomEvent("timeline-hover", {
+                    detail: { index: idx, isHovering: false },
+                  }),
+                );
+              }}
             >
               <span className="timeline-node absolute -left-[11px] top-1 w-6 h-6 rounded-full glass-card border border-brand-cyan flex items-center justify-center text-brand-cyan bg-bg-primary z-10 shadow-[0_0_15px_rgba(0,229,255,0.5)]">
                 <GitCommit className="w-3.5 h-3.5" />
