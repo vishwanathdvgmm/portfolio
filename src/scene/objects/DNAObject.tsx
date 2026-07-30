@@ -18,7 +18,6 @@ export function DNAObject() {
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
   // Physics tracking for DNA unravel interaction
-  const mouseDist = useRef(0);
   const unravelAmount = useRef(0);
 
   // Initialize instanced meshes

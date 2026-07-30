@@ -9,7 +9,7 @@ import { AboutParticles } from "../objects/AboutParticles";
 export function AboutScene() {
   const groupRef = useRef<THREE.Group>(null);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (groupRef.current) {
       // Very slow global rotation for the entire scene
       groupRef.current.rotation.y += 0.001;
