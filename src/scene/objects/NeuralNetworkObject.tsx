@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo, useEffect, useState } from "react";
+import React, { useRef, useMemo, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -38,7 +38,7 @@ export function NeuralNetworkObject() {
   const edgesRef = useRef<THREE.LineSegments>(null);
   const groupRef = useRef<THREE.Group>(null);
 
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const hoveredCategoryRef = useRef<string | null>(null);
 
   // Generate Graph Data
   const { nodes, edges, linePositions, lineColors } = useMemo(() => {
@@ -136,9 +136,9 @@ export function NeuralNetworkObject() {
         isHovering: boolean;
       }>;
       if (customEvent.detail.isHovering) {
-        setHoveredCategory(customEvent.detail.category);
+        hoveredCategoryRef.current = customEvent.detail.category;
       } else {
-        setHoveredCategory(null);
+        hoveredCategoryRef.current = null;
       }
     };
 
@@ -175,10 +175,9 @@ export function NeuralNetworkObject() {
         let targetScale = node.isHub ? 0.4 : 0.15;
 
         // Hover WOW effect
-        const isFaded =
-          hoveredCategory !== null && node.category !== hoveredCategory;
-        const isHighlighted =
-          hoveredCategory !== null && node.category === hoveredCategory;
+        const hCat = hoveredCategoryRef.current;
+        const isFaded = hCat !== null && node.category !== hCat;
+        const isHighlighted = hCat !== null && node.category === hCat;
 
         if (isHighlighted) targetScale *= 1.5;
         if (isFaded) targetScale *= 0.5;
@@ -231,10 +230,9 @@ export function NeuralNetworkObject() {
         positions[i * 6 + 5] = n2.position.z + w2Z;
 
         // Color logic for lines (Pulse effect)
-        const isFaded =
-          hoveredCategory !== null && edge.category !== hoveredCategory;
-        const isHighlighted =
-          hoveredCategory !== null && edge.category === hoveredCategory;
+        const hCat2 = hoveredCategoryRef.current;
+        const isFaded = hCat2 !== null && edge.category !== hCat2;
+        const isHighlighted = hCat2 !== null && edge.category === hCat2;
 
         let edgeColor = COLORS["Default"];
         if (!isFaded) {

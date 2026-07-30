@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo, useEffect, useState } from "react";
+import React, { useRef, useMemo, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -38,12 +38,12 @@ export function ProjectParticles() {
     return { positions, velocities, colors };
   }, []);
 
-  const [isHovering, setIsHovering] = useState(false);
+  const isHoveringRef = useRef(false);
 
   useEffect(() => {
     const handleHover = (e: Event) => {
       const customEvent = e as CustomEvent<{ isHovering: boolean }>;
-      setIsHovering(customEvent.detail.isHovering);
+      isHoveringRef.current = customEvent.detail.isHovering;
     };
 
     window.addEventListener("project-hover", handleHover);
@@ -55,7 +55,7 @@ export function ProjectParticles() {
       const posArray = pointsRef.current.geometry.attributes.position
         .array as Float32Array;
 
-      const speedMultiplier = isHovering ? 5.0 : 1.0;
+      const speedMultiplier = isHoveringRef.current ? 5.0 : 1.0;
 
       for (let i = 0; i < particleCount; i++) {
         // Rain effect: move down
