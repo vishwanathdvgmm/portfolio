@@ -160,16 +160,16 @@ export function NeuralNetworkObject() {
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i];
 
-        // Slight organic movement
-        node.position.add(node.velocity);
-        // Bounce within boundary relative to hub (if not hub)
-        // For simplicity, just let them wander slowly and use a sine wave
-        const wobbleX = Math.sin(time * 0.5 + i) * 0.01;
-        const wobbleY = Math.cos(time * 0.4 + i) * 0.01;
+        // Calculate absolute wobble based on time and initial position
+        // This prevents them from flying away to infinity!
+        const wobbleX = Math.sin(time * 0.5 + i) * 0.2;
+        const wobbleY = Math.cos(time * 0.4 + i) * 0.2;
+        const wobbleZ = Math.sin(time * 0.6 + i) * 0.2;
 
         dummy.position.copy(node.position);
         dummy.position.x += wobbleX;
         dummy.position.y += wobbleY;
+        dummy.position.z += wobbleZ;
 
         // Scale based on hub and hover state
         let targetScale = node.isHub ? 0.4 : 0.15;
@@ -213,19 +213,22 @@ export function NeuralNetworkObject() {
         const n1 = nodes[edge.source];
         const n2 = nodes[edge.target];
 
-        // Apply same wobble
-        const w1X = Math.sin(time * 0.5 + edge.source) * 0.01;
-        const w1Y = Math.cos(time * 0.4 + edge.source) * 0.01;
-        const w2X = Math.sin(time * 0.5 + edge.target) * 0.01;
-        const w2Y = Math.cos(time * 0.4 + edge.target) * 0.01;
+        // Apply exact same wobble as nodes so lines stay attached
+        const w1X = Math.sin(time * 0.5 + edge.source) * 0.2;
+        const w1Y = Math.cos(time * 0.4 + edge.source) * 0.2;
+        const w1Z = Math.sin(time * 0.6 + edge.source) * 0.2;
+
+        const w2X = Math.sin(time * 0.5 + edge.target) * 0.2;
+        const w2Y = Math.cos(time * 0.4 + edge.target) * 0.2;
+        const w2Z = Math.sin(time * 0.6 + edge.target) * 0.2;
 
         positions[i * 6] = n1.position.x + w1X;
         positions[i * 6 + 1] = n1.position.y + w1Y;
-        positions[i * 6 + 2] = n1.position.z;
+        positions[i * 6 + 2] = n1.position.z + w1Z;
 
         positions[i * 6 + 3] = n2.position.x + w2X;
         positions[i * 6 + 4] = n2.position.y + w2Y;
-        positions[i * 6 + 5] = n2.position.z;
+        positions[i * 6 + 5] = n2.position.z + w2Z;
 
         // Color logic for lines (Pulse effect)
         const isFaded =
@@ -270,7 +273,10 @@ export function NeuralNetworkObject() {
   return (
     <group ref={groupRef}>
       {/* Nodes */}
-      <instancedMesh ref={nodesRef} args={[undefined, undefined, nodes.length]}>
+      <instancedMesh
+        ref={nodesRef}
+        args={[null as any, null as any, nodes.length]}
+      >
         <sphereGeometry args={[1, 16, 16]} />
         <meshBasicMaterial toneMapped={false} />
       </instancedMesh>
