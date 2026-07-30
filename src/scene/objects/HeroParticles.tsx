@@ -50,8 +50,8 @@ export function HeroParticles() {
     const posArray = posAttribute.array as Float32Array;
 
     // Convert mouse (NDC) to rough world coordinates at z=0 plane
-    const mouseX = (state.pointer.x * state.viewport.width) / 2;
-    const mouseY = (state.pointer.y * state.viewport.height) / 2;
+    const mouseX = (state.pointer.x * (state as any).viewport.width) / 2;
+    const mouseY = (state.pointer.y * (state as any).viewport.height) / 2;
 
     for (let i = 0; i < count; i++) {
       const idx = i * 3;
