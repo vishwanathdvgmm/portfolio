@@ -76,9 +76,10 @@ export function Navbar() {
     const fraction = offsetInWrapper / totalWrapperHeight;
 
     // Map this fraction to the scroll container's scrollable range
+    // fraction * maxScroll gives the EXACT absolute scrollTop we need to be at.
     const maxScroll =
       scrollContainer.scrollHeight - scrollContainer.clientHeight;
-    const targetScroll = fraction * maxScroll + scrollContainer.scrollTop;
+    const targetScroll = fraction * maxScroll;
 
     scrollContainer.scrollTo({ top: targetScroll, behavior: "smooth" });
 

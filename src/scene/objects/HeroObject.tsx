@@ -29,8 +29,8 @@ export function HeroObject() {
     const mx = state.pointer.x;
     const my = state.pointer.y;
 
-    // Protection against huge deltas on tab switch
-    const safeDelta = Math.min(delta, 0.1);
+    // Protection against huge deltas on tab switch, and prevent division by 0
+    const safeDelta = Math.max(0.001, Math.min(delta, 0.1));
 
     const dx = mx - lastMouse.current.x;
     const dy = my - lastMouse.current.y;
