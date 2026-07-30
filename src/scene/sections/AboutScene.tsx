@@ -17,7 +17,7 @@ export function AboutScene() {
   });
 
   return (
-    <group position={[0, 0, -120]}>
+    <group position={[0, 0, -120]} scale={[2.5, 2.5, 2.5]}>
       {/* 3D Elements for About Section */}
       <group ref={groupRef}>
         <DNAObject />
