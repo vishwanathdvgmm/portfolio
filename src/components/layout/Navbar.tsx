@@ -20,29 +20,67 @@ export function Navbar() {
 
   const handleNavClick = (id: SectionId) => {
     setActiveSection(id);
+
+    // drei's ScrollControls creates a specific DOM structure:
+    // A fixed-position wrapper div > a scrollable div (with overflow: auto/scroll)
+    // > a tall "virtual page" div > the actual HTML content
+    //
+    // We need to find the scrollable div and calculate where each section
+    // sits relative to the total scrollable height.
+
     const element = document.getElementById(id);
+    if (!element) return;
 
-    // Find the hidden scroll container created by @react-three/drei ScrollControls
-    // It's the only div that has a scrollHeight > clientHeight and overflow auto
-    const scrollContainers = Array.from(
-      document.querySelectorAll("div"),
-    ).filter(
-      (el) =>
-        el.scrollHeight > window.innerHeight &&
-        (el.style.overflow === "auto" ||
-          el.style.overflowY === "auto" ||
-          window.getComputedStyle(el).overflowY === "auto"),
-    );
-    const scrollContainer = scrollContainers[0];
+    // Strategy: Find drei's scroll container.
+    // It's the div that has a very tall child (the "virtual pages" div).
+    // We look for divs whose scrollHeight is much larger than their clientHeight.
+    const allDivs = document.querySelectorAll("div");
+    let scrollContainer: HTMLElement | null = null;
 
-    if (element && scrollContainer) {
-      // Because Drei uses CSS transforms to move the HTML, the visual position on screen
-      // (getBoundingClientRect().top) is exactly how far we need to scroll from our CURRENT scroll position.
-      const targetScroll =
-        scrollContainer.scrollTop + element.getBoundingClientRect().top;
+    for (const div of allDivs) {
+      const style = window.getComputedStyle(div);
+      const isScrollable =
+        style.overflow === "auto" ||
+        style.overflow === "scroll" ||
+        style.overflowY === "auto" ||
+        style.overflowY === "scroll";
 
-      scrollContainer.scrollTo({ top: targetScroll, behavior: "smooth" });
+      if (isScrollable && div.scrollHeight > div.clientHeight * 1.5) {
+        scrollContainer = div;
+        break;
+      }
     }
+
+    if (!scrollContainer) return;
+
+    // The HTML content inside drei is wrapped in a div with pointer-events-auto.
+    // Each section has an id. We need to find the section's offset
+    // relative to the pointer-events-auto container, then map that
+    // to the scroll container's scroll range.
+    const htmlWrapper = document.querySelector(
+      ".pointer-events-auto",
+    ) as HTMLElement;
+    if (!htmlWrapper) return;
+
+    // Get the section's position relative to the HTML wrapper
+    const wrapperRect = htmlWrapper.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+
+    // The visual offset of the element from the top of the wrapper
+    const offsetInWrapper = elementRect.top - wrapperRect.top;
+
+    // The total height of the wrapper (all sections combined)
+    const totalWrapperHeight = htmlWrapper.scrollHeight;
+
+    // The fraction through the content this section is at
+    const fraction = offsetInWrapper / totalWrapperHeight;
+
+    // Map this fraction to the scroll container's scrollable range
+    const maxScroll =
+      scrollContainer.scrollHeight - scrollContainer.clientHeight;
+    const targetScroll = fraction * maxScroll + scrollContainer.scrollTop;
+
+    scrollContainer.scrollTo({ top: targetScroll, behavior: "smooth" });
 
     if (isMenuOpen) {
       toggleMenu();
