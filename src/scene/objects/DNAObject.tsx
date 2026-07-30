@@ -26,10 +26,24 @@ export function DNAObject() {
     const mx = state.pointer.x; // -1 to 1
     const my = state.pointer.y; // -1 to 1
 
-    // Unravel effect driven by vertical mouse motion
-    // my goes from -1 (bottom) to 1 (top)
-    // We'll make it fully twisted at bottom (0) and fully unraveled at top (1)
-    const targetUnravel = THREE.MathUtils.clamp((my + 1) / 2, 0, 1);
+    // Unravel effect driven by scroll position
+    // We want the DNA to unravel as the user scrolls through the About section.
+    // The About section is roughly between offset 0.1 and 0.3.
+    // We can use the camera's Z position or the scroll offset directly.
+
+    // The camera reaches About (Z=-100) around offset = 0.2
+    // Let's make it fully unraveled when the camera gets close to the DNA (Z=-125)
+    // We can just calculate the distance between the camera and the DNA!
+    const distToCamera = state.camera.position.distanceTo(
+      groupRef.current?.position || new THREE.Vector3(0, 0, 0),
+    );
+
+    // When distance is large (> 100), it's 0. When distance is small (< 40), it's 1
+    const targetUnravel = THREE.MathUtils.clamp(
+      1 - (distToCamera - 40) / 60,
+      0,
+      1,
+    );
 
     unravelAmount.current = THREE.MathUtils.lerp(
       unravelAmount.current,
