@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { HeroObject } from "../objects/HeroObject";
+import { HeroParticles } from "../objects/HeroParticles";
 
 export function HeroScene() {
   const groupRef = useRef<THREE.Group>(null);
@@ -18,8 +19,8 @@ export function HeroScene() {
         Math.sin(state.clock.elapsedTime * 0.5) * 0.5;
 
       // Pointer-driven rotation (parallax effect)
-      targetRotation.current.x = (state.pointer.y * Math.PI) / 4;
-      targetRotation.current.y = (state.pointer.x * Math.PI) / 4;
+      targetRotation.current.x = (state.pointer.y * Math.PI) / 8;
+      targetRotation.current.y = (state.pointer.x * Math.PI) / 8;
 
       // Smooth interpolation using lerp
       groupRef.current.rotation.x = THREE.MathUtils.lerp(
@@ -40,6 +41,7 @@ export function HeroScene() {
       {/* 3D Elements */}
       <group ref={groupRef}>
         <HeroObject />
+        <HeroParticles />
       </group>
     </group>
   );
