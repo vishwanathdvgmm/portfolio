@@ -115,31 +115,31 @@ export function HeroObject() {
         position={[0, 0, 2]}
       />
 
-      {/* Solid Glowing Core */}
+      {/* Dark Glass Core */}
       <mesh ref={coreRef} castShadow receiveShadow>
         <torusKnotGeometry args={[1.8, 0.6, 256, 64]} />
         <meshPhysicalMaterial
-          color="#00e5ff"
-          emissive="#0044ff"
-          emissiveIntensity={0.8}
-          roughness={0.1}
-          metalness={0.9}
-          transmission={0.9}
-          thickness={1.5}
-          ior={1.5}
-          clearcoat={1.0}
-          clearcoatRoughness={0.1}
+          color="#020617"
+          emissive="#020617"
+          emissiveIntensity={0.2}
+          roughness={0.2}
+          metalness={0.8}
+          transmission={0.95}
+          thickness={1.0}
+          ior={1.2}
+          transparent={true}
+          opacity={0.8}
         />
       </mesh>
 
-      {/* Outer Wireframe Shell */}
-      <mesh ref={shellRef} scale={1.15}>
+      {/* Outer Wireframe Shell - Faint Cyan */}
+      <mesh ref={shellRef} scale={1.05}>
         <torusKnotGeometry args={[1.8, 0.6, 128, 32]} />
         <meshBasicMaterial
-          color="#00ffff"
+          color="#06b6d4"
           wireframe={true}
           transparent={true}
-          opacity={0.15}
+          opacity={0.05}
           blending={THREE.AdditiveBlending}
         />
       </mesh>
