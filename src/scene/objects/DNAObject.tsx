@@ -161,7 +161,7 @@ export function DNAObject() {
 
       {/* Strand 1 (Cyan) */}
       <instancedMesh ref={strand1Ref} args={[undefined, undefined, count]}>
-        <sphereGeometry args={[0.3, 16, 16]} />
+        <sphereGeometry args={[0.3, 12, 12]} />
         <meshPhysicalMaterial
           color="#06b6d4"
           emissive="#06b6d4"
@@ -174,7 +174,7 @@ export function DNAObject() {
 
       {/* Strand 2 (White) */}
       <instancedMesh ref={strand2Ref} args={[undefined, undefined, count]}>
-        <sphereGeometry args={[0.3, 16, 16]} />
+        <sphereGeometry args={[0.3, 12, 12]} />
         <meshPhysicalMaterial
           color="#ffffff"
           emissive="#ffffff"
@@ -186,7 +186,7 @@ export function DNAObject() {
 
       {/* Connecting Rungs (Subtle Glass) */}
       <instancedMesh ref={rungsRef} args={[undefined, undefined, count]}>
-        <cylinderGeometry args={[0.05, 0.05, 1, 8]} />
+        <cylinderGeometry args={[0.05, 0.05, 1, 5]} />
         <meshPhysicalMaterial
           color="#e0f2fe"
           transmission={0.9}

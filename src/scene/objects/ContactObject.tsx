@@ -175,7 +175,7 @@ export function ContactObject() {
         rotation={[Math.PI / 2, 0, 0]}
         scale={[0.01, 1, 0.01]}
       >
-        <cylinderGeometry args={[1, 1, 50, 32]} />
+        <cylinderGeometry args={[1, 1, 50, 16]} />
         <meshBasicMaterial
           ref={lightShaftMaterialRef}
           color="#fbbf24"
@@ -196,7 +196,7 @@ export function ContactObject() {
           scale={[1 - i * 0.1, 1 - i * 0.1, 1]}
           position={[0, 0, -i * 2]}
         >
-          <torusGeometry args={[10, 0.2 + i * 0.05, 16, 100]} />
+          <torusGeometry args={[10, 0.2 + i * 0.05, 12, 64]} />
           <meshStandardMaterial
             color="#ffffff"
             emissive={i % 2 === 0 ? "#fbbf24" : "#ffffff"}

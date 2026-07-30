@@ -2,7 +2,7 @@
 
 import React, { Suspense, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ScrollControls } from "@react-three/drei";
+import { ScrollControls, PerformanceMonitor, Preload } from "@react-three/drei";
 import { World } from "./World";
 import { useWebGLStore } from "../store/webglStore";
 import { WebGLErrorBoundary } from "../components/ui/WebGLErrorBoundary";
@@ -10,6 +10,7 @@ import { WebGLErrorBoundary } from "../components/ui/WebGLErrorBoundary";
 export function Experience() {
   const { setCanvasReady } = useWebGLStore();
   const [pages, setPages] = useState(6); // Default
+  const [dpr, setDpr] = useState(1.5); // Start with medium-high dpr
 
   useEffect(() => {
     // We create a ResizeObserver to observe the HTML container's height
@@ -56,7 +57,7 @@ export function Experience() {
     <div className="absolute inset-0 z-0 h-screen w-screen bg-bg-primary">
       <WebGLErrorBoundary>
         <Canvas
-          dpr={[1, 2]}
+          dpr={dpr}
           gl={{
             antialias: true,
             alpha: true,
@@ -65,11 +66,17 @@ export function Experience() {
           onCreated={() => setCanvasReady(true)}
           className="h-full w-full"
         >
-          <Suspense fallback={null}>
-            <ScrollControls pages={pages} damping={0.25} distance={1.2}>
-              <World />
-            </ScrollControls>
-          </Suspense>
+          <PerformanceMonitor
+            onIncline={() => setDpr(2)}
+            onDecline={() => setDpr(1)}
+          >
+            <Suspense fallback={null}>
+              <ScrollControls pages={pages} damping={0.25} distance={1.2}>
+                <World />
+              </ScrollControls>
+              <Preload all />
+            </Suspense>
+          </PerformanceMonitor>
         </Canvas>
       </WebGLErrorBoundary>
     </div>

@@ -117,7 +117,7 @@ export function HeroObject() {
 
       {/* Dark Glass Core */}
       <mesh ref={coreRef} castShadow receiveShadow>
-        <torusKnotGeometry args={[1.8, 0.6, 256, 64]} />
+        <torusKnotGeometry args={[1.8, 0.6, 128, 32]} />
         <meshPhysicalMaterial
           color="#020617"
           emissive="#06b6d4"
@@ -134,7 +134,7 @@ export function HeroObject() {
 
       {/* Outer Wireframe Shell - Bright Cyan Wireframe */}
       <mesh ref={shellRef} scale={1.05}>
-        <torusKnotGeometry args={[1.8, 0.6, 128, 32]} />
+        <torusKnotGeometry args={[1.8, 0.6, 64, 16]} />
         <meshBasicMaterial
           color="#06b6d4"
           wireframe={true}
