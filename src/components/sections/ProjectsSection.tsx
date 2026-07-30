@@ -106,11 +106,21 @@ export function ProjectsSection() {
                   `--hover-${project.id}`,
                   "1",
                 );
+                window.dispatchEvent(
+                  new CustomEvent("project-hover", {
+                    detail: { projectId: project.id, isHovering: true },
+                  }),
+                );
               }}
               onMouseLeave={() => {
                 document.documentElement.style.setProperty(
                   `--hover-${project.id}`,
                   "0",
+                );
+                window.dispatchEvent(
+                  new CustomEvent("project-hover", {
+                    detail: { projectId: project.id, isHovering: false },
+                  }),
                 );
               }}
             >
