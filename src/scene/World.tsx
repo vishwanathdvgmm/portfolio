@@ -25,7 +25,7 @@ import { Footer } from "../components/layout/Footer";
 export function World() {
   return (
     <>
-      <fog attach="fog" args={["#020617", 10, 60]} />
+      <fog attach="fog" args={["#020617", 20, 150]} />
       <CameraController />
       <SceneLighting />
       <BackgroundParticles count={1500} />
