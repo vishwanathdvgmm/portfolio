@@ -190,7 +190,7 @@ export function HeroSection() {
           </button>
 
           <a
-            href="/resume.pdf"
+            href="/portfolio/resume.pdf"
             target="_blank"
             download
             className="hero-btn inline-flex items-center gap-2 px-6 py-3.5 rounded-full glass-card hover:bg-white/10 text-text-secondary hover:text-white font-medium text-sm border border-glass-border hover:scale-105 active:scale-95 transition-all duration-200"
