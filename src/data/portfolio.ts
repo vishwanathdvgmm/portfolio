@@ -6,6 +6,8 @@
 
 export type Palette = { from: string; via: string; to: string; accent: string };
 
+const base = import.meta.env.BASE_URL;
+
 export const profile = {
   fullName: 'Vishwanath M M',
   displayName: 'Vishwanath M M',
@@ -23,10 +25,10 @@ export const profile = {
     linkedin: 'https://linkedin.com/in/vishwanathmm',
     github: 'https://github.com/vishwanathdvgmm',
   },
-  resumePdf: '/assets/Vishwanath_M_M_Resume.pdf',
+  resumePdf: `${base}assets/Vishwanath_M_M_Resume.pdf`,
   portrait: {
-    src: '/assets/portrait-720.webp',
-    srcSet: '/assets/portrait-420.webp 420w, /assets/portrait-720.webp 720w, /assets/portrait-1100.webp 1100w',
+    src: `${base}assets/portrait-720.webp`,
+    srcSet: `${base}assets/portrait-420.webp 420w, ${base}assets/portrait-720.webp 720w, ${base}assets/portrait-1100.webp 1100w`,
     alt: 'Portrait of Vishwanath M M',
   },
   interests: ['Compiler Design', 'Systems Programming', 'Machine Learning'],
